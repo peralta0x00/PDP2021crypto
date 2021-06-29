@@ -1,12 +1,17 @@
+//include modules
 const http = require('http')
+const ext = require('./externalFunctionExample.js')
 
 const hostname = '127.0.0.1'
-const port = 3000;
+const port = 3001;
+
 
 const server = http.createServer((req, res) => {
   res.statusCode = 200
   res.setHeader('Content-Type', 'text/plain')
-  res.end('Hello World!\n')
+  res.write(ext.testFunction() +'\n')
+  res.write(req.url)
+  res.end("Hello world!\n")
 })
 
 server.listen(port, hostname, () => {
