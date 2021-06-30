@@ -7,7 +7,7 @@ const port = 3001;
 
 
 const server = http.createServer((req, res) => {
-  res.statusCode = 200
+  res.statusCode = 404
   res.setHeader('Content-Type', 'text/plain')
   res.write(ext.testFunction() +'\n')
   res.write(req.url)
