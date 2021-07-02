@@ -2,7 +2,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler
 from datetime import datetime
 
-class testHandler(BaseHTTPRequestHandler):
+class handler(BaseHTTPRequestHandler):
    def do_GET(self):
       #get, as reminder, simply requests data; doesn't modify
       self.send_response(200);
