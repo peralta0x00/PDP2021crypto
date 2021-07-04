@@ -1,17 +1,20 @@
-import Head from 'next/head'
+import Head from 'next/head' //for head module..
 import styles from '../styles/Home.module.css'
-
+import Link from 'next/link'
 export default function Home() {
   return (
     <div className={styles.container}>
-      <Head>
+      <Head> //React component
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+        <h1 className="title">
+	  Read{' '}
+	  <Link href="/posts/first-post">
+	    <a>this page!</a>
+	  </Link>
         </h1>
 
         <p className={styles.description}>
