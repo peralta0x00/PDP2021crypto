@@ -1,0 +1,23 @@
+.header {
+   padding:0px;
+   text-align: center;
+   font-size:25px;
+   margin:0;
+   padding:10px;
+   background:gray;
+}  
+
+.tile {
+   background:navy;
+   color:white;
+   padding:10px;
+   border:10px solid black;
+}
+ 
+.mainGrid {
+   display:grid;
+   grid-template-columns:auto auto auto;
+   padding:0px;
+   grid-auto-rows: 200px;
+
+}
