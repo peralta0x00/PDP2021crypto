@@ -8,17 +8,19 @@ body {
   */
 }
 
-a {
-  color: #0070f3;
-  text-decoration: none;
-}
 
 * {
   box-sizing: border-box;
 }
 
+a {
+  background:navy;
+  color:white;
+}
+
 a:hover {
    text-decoration: underline;
+   color:red
 }
 
 img {

@@ -1,17 +1,31 @@
 import myStyles from '../styles/styles.module.css'
+import Layout from '../components/layout'
+import Link from 'next/link'
+const pairs = ["btcusd", "ethusd", "batusd", "liteusd", "dogeusd", "xrpusd"]
 export default function Home() {
    return (
-        <div>
-           <h1 className= {myStyles.header}>PeraltaCrypto</h1>
+           <Layout>
    	   <div className={myStyles.mainGrid}>
-	      <div className={myStyles.tile}>btcusd</div> 
-	      <div className={myStyles.tile}>ethusd</div>
-	      <div className={myStyles.tile}>batusd</div>
-	      <div className={myStyles.tile}>litecoin</div>
-	      <div className={myStyles.tile}>dogeusd</div>
-	      <div className={myStyles.tile}>xrpusd</div>
+	      <Link href = "/cryptoDetailed/{pairs[0]}">
+		<a className = {myStyles.tile} > {pairs[0]}</a>
+	      </Link>
+	      <Link href = "/cryptoDetailed/ethusd">
+                <a className = {myStyles.tile} > {pairs[1]}</a>
+              </Link>
+	      <Link href = "/cryptoDetailed/batusd">
+                <a className = {myStyles.tile} > {pairs[2]}</a>
+              </Link>  	
+	      <Link href = "/cryptoDetailed/liteusd">
+                <a className = {myStyles.tile} > {pairs[3]}</a>
+              </Link> 
+	      <Link href = "/cryptoDetailed/dogeusd">
+                <a className = {myStyles.tile} > {pairs[4]}</a>
+              </Link> 
+	      <Link href = "/cryptoDetailed/xrpusd">
+                <a className = {myStyles.tile} > {pairs[5]}</a>
+              </Link> 
 	   </div>
-        </div>
+	</Layout>   
    )
 
 }
