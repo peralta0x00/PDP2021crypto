@@ -17,7 +17,7 @@ class handler(BaseHTTPRequestHandler):
 
 		respoDict = info[0]
 
-		
+		//is str() redundant? 		
 		self.wfile.write(str(respoDict))
 		return
 
