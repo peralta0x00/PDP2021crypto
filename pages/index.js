@@ -1,7 +1,19 @@
 import myStyles from '../styles/styles.module.css'
 import Layout from '../components/layout'
 import Link from 'next/link'
+
 const pairs = ["btcusd", "ethusd", "batusd", "liteusd", "dogeusd", "xrpusd"]
+
+//change fun name, but, here, we get info needed to call getStaticProps
+//export function getSortedPostsData()
+
+//here, given information, do async data retrieval 
+//export async function getStaticProps()
+
+//1. configuring 
+//query params
+//
+
 export default function Home() {
    return (
            <Layout>
