@@ -20,7 +20,7 @@ class handler(BaseHTTPRequestHandler):
 
 		#create body of response
 		#for some reason, query needs to be capitalized (w/o, returns '..='?)
-		decipheredRequest = url+query.upper()[:-1]
+		decipheredRequest = url+query.upper()
 		with urllib.request.urlopen(decipheredRequest) as response:
  			#serialize response into json
 			respo = json.load(response)
