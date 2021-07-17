@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router'
-import Head from 'next/head'
 import Layout from '../../components/layout'
 export default function detailedCrypto() {
         const router = useRouter()
@@ -15,4 +14,3 @@ export default function detailedCrypto() {
 
 
 
-//since need to wait on data, async
