@@ -1,7 +1,6 @@
 from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import urllib.request
-
 from nomics import Nomics
 import json
 
