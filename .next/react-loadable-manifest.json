@@ -8,7 +8,7 @@
   "index.js -> ../lib/cryptos": {
     "id": "./lib/cryptos.js",
     "files": [
-      "static/chunks/vendors-node_modules_swr_esm_index_js.js",
+      "static/chunks/vendors-node_modules_react-sparklines_build_index_js-node_modules_swr_esm_index_js.js",
       "static/chunks/lib_cryptos_js.js"
     ]
   }
