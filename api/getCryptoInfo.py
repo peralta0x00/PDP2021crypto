@@ -66,7 +66,7 @@ class handler(BaseHTTPRequestHandler):
 			delta = timedelta(days=7)
 		elif(interv=="30d"):
 			delta = timedelta(weeks=4)	
-		elif(interv=="ytd"):
+		elif(interv=="365d"):
 			delta = timedelta(weeks=56)
 		else:
 			delta = timedelta(hours=12)
