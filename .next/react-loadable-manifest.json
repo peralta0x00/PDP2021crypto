@@ -4,5 +4,12 @@
     "files": [
       "static/chunks/node_modules_next_dist_client_dev_noop_js.js"
     ]
+  },
+  "index.js -> ../lib/cryptoDisplays": {
+    "id": "./lib/cryptoDisplays.js",
+    "files": [
+      "static/chunks/vendors-node_modules_react-sparklines_build_index_js-node_modules_swr_esm_index_js.js",
+      "static/chunks/lib_cryptoDisplays_js.js"
+    ]
   }
 }

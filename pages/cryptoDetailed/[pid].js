@@ -15,7 +15,7 @@ export default function detailedCrypto() {
         //During prerendering, the router's query object will be empty since we do not have query information to provide during this phase.
 	if( pid !== undefined) {
 		var call = apiCALL + pid + "&priceHist=true"
-		call += "&priceInterv=ytd"
+		call += "&priceInterv=365d"
 		console.log("my call: " + call)
  		const {data, error} = useSWR(call, fetcher)		
 		if(!data) return <div>Loading content..."</div>
