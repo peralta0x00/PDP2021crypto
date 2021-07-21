@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import Layout from '../../components/layout'
 import useSWR from 'swr'
 import { Sparklines, SparklinesReferenceLine, SparklinesLine, SparklinesSpots } from 'react-sparklines'
-
 import myStyles from '../../styles/styles.module.css'
 const apiCALL =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
 const fetcher = url => fetch(url).then(res => res.json());
@@ -16,6 +15,8 @@ export default function detailedCrypto() {
         //During prerendering, the router's query object will be empty since we do not have query information to provide during this phase.
 	if( pid !== undefined) {
 		var call = apiCALL + pid + "&priceHist=true"
+		call += "&priceInterv=30d"
+		console.log("my call: " + call)
  		const {data, error} = useSWR(call, fetcher)		
 		if(!data) return <div>Loading content..."</div>
 		console.log(data[0])

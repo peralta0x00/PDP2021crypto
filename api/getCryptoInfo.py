@@ -31,14 +31,21 @@ class handler(BaseHTTPRequestHandler):
 		currencyData = sorted(tmpCurrData, key=lambda tmp: tmp["id"])
 		#handle rate limit..
 		time.sleep(1)
-		startTime="&start=" + self.getCurrentTimeRFC3339()
-
+		#don't always want pricehist...
 		if("priceHist" in rawQuery and rawQuery["priceHist"][0] == "true"):
-			with urllib.request.urlopen(sparklineURL + pairsAsStr + startTime) as response:
+			request = sparklineURL + pairsAsStr
+			#should always appear, as there's a default 1d param... just ensure it's there?
+			if("priceInterv" in rawQuery):
+				request += "&start="+self.getTimeInterv(rawQuery["priceInterv"][0])
+			else:
+				request += "&start="+self.getTimeInterv(None)
+			#how to handle intentional jargon?
+			with urllib.request.urlopen(request) as response:
 				respo = json.load(response)
 				#grab prices and throw it into its corresponding obj (w/metadat). since same keys expect both sorted, safe to say indexing will work..?	
 				for index, obj in enumerate(respo) :
 					currencyData[index]["prices"] = respo[index]["prices"]
+		
 		self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
 		return 
 
@@ -52,6 +59,17 @@ class handler(BaseHTTPRequestHandler):
 		self.send_header('Content-type', 'text/plain')
 		self.end_headers()
 	
-	def getCurrentTimeRFC3339(self):
-		now = datetime.datetime.utcnow() - timedelta(hours=12)
+	def getTimeInterv(self, interv):
+		if(interv=="1d"):
+			delta = timedelta(hours=24)
+		elif(interv=="7d"):
+			delta = timedelta(days=7)
+		elif(interv=="30d"):
+			delta = timedelta(weeks=4)	
+		elif(interv=="ytd"):
+			delta = timedelta(weeks=56)
+		else:
+			delta = timedelta(hours=12)
+		
+		now = datetime.datetime.utcnow() - delta
 		return now.isoformat("T") + "Z"
