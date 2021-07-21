@@ -7,8 +7,10 @@ import Link from 'next/link'
    libraryStorage attempted (and failed) on server-side. and attempts
    to run only clientside (if typeof window !== 'undefined')  introduced issues
 */
-const DynamicCryptoPrefFetchComponent = dynamic(() =>
-        import ('../lib/cryptos'),
+
+//defaults to default function, if present. it is present
+const DynamicHomePageDisplay = dynamic(() =>
+        import ('../lib/cryptoDisplays'),
 	{ ssr: false}
 )
 
@@ -16,7 +18,7 @@ const DynamicCryptoPrefFetchComponent = dynamic(() =>
 export default function Home() {
       return (
 		<Layout>
-			<DynamicCryptoPrefFetchComponent/>
+			<DynamicHomePageDisplay/>
 		</Layout>
       )
 }
