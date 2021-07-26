@@ -3,9 +3,9 @@ import sty from './layout.module.css'
 import Link from 'next/link'
 export default function Layout({children}) {
    return (
-    <div>
+    <div className={sty.header}>
 	<title>PeraltaCrypto</title>
-        <h1 className= {sty.header}>PeraltaCrypto</h1>
+        <h1>PeraltaCrypto</h1>
       <main>{children}</main>
     </div>
    )

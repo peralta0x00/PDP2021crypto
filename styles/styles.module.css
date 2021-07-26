@@ -1,6 +1,8 @@
 .tile {
    background:navy;
    color:white;
+   text-align:left;
+   font-size:17px;
    border:2px solid black;
 }
  
@@ -18,13 +20,15 @@
 }
 
 .side {
-   padding-left:2vw;
+   padding-left:0.8vw;
    border:2px solid black;
    color:white;
+   text-align:left;
+   font-size:1.4vw;
 }
 
 
-.mainContent{
+.mainContent {
    background:navy;
    display:grid;
    grid-template-columns:70% 30%;
@@ -32,40 +36,39 @@
    padding:5px;
    color:white
 }
-.priceBar{
+.priceBar {
    background:navy;
    border-bottom:2px solid black;
    color:white;
+   text-align:left;
    grid-template-columns:60% 40%;
-   padding-left:8vw;
-   font-size:2vw;
+   font-size:2.5vw;
+   padding-left:10px;
    align-items:center;
    display:grid;
 }
 .help {
   text-align:center;
-  font-size:0.5vw;  
+  font-size:1vw;  
 }
 
 .mainBar img {
-   float:left;
    height: 7%;
    width: 7%;
-   vertical-align:middle;
-   position:relative;
 }
 
 .mainBar {
     background:navy;
     align-items:center;
     display:flex;
+    text-align:left;
     border:2px solid black;
 }
 
 .mainBar h1 {
+   font-size:3.4vw;
    background:navy;
    padding-left:10px;
-   font-size:3vw;
    color:white;
    white-space:nowrap;
 }
