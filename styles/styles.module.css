@@ -18,6 +18,7 @@
 }
 
 .side {
+   padding-left:2vw;
    border:2px solid black;
    color:white;
 }
@@ -29,6 +30,21 @@
    grid-template-columns:70% 30%;
    height:500px;
    padding:5px;
+   color:white
+}
+.priceBar{
+   background:navy;
+   border-bottom:2px solid black;
+   color:white;
+   grid-template-columns:60% 40%;
+   padding-left:8vw;
+   font-size:2vw;
+   align-items:center;
+   display:grid;
+}
+.help {
+  text-align:center;
+  font-size:0.5vw;  
 }
 
 .mainBar img {

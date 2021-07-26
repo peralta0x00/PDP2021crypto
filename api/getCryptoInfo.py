@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 import urllib.request
 import datetime
+import dateutil.parser
 import time
 from datetime import timedelta
 from nomics import Nomics
@@ -43,9 +44,11 @@ class handler(BaseHTTPRequestHandler):
 			with urllib.request.urlopen(request) as response:
 				respo = json.load(response)
 				#grab prices and throw it into its corresponding obj (w/metadat). since same keys expect both sorted, safe to say indexing will work..?	
-				for index, obj in enumerate(respo) :
+				for index, obj in enumerate(respo):				
 					currencyData[index]["prices"] = respo[index]["prices"]
-		
+					currencyData[index]["first_trade"] = dateutil.parser.isoparse(currencyData[index]["first_trade"]).strftime("%b %d %Y %H:%M:%S")    
+					
+				print(currencyData)
 		self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
 		return 
 

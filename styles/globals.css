@@ -12,7 +12,10 @@ body {
   width:100%
 }
 
-
+pre {
+   font-family:menlo;
+   margin:0;
+}
 
 a {
   background:navy;
