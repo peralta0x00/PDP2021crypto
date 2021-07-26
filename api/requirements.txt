@@ -1,1 +1,2 @@
 nomics-python==3.2.0
+dateutil.parser==2.8.2
