@@ -6,7 +6,7 @@ export default function Layout({children}) {
     <div className={sty.header}>
 	<title>PeraltaCrypto</title>
         <h1>PeraltaCrypto</h1>
-      <main>{children}</main>
+        <div>{children}</div>      
     </div>
    )
 }

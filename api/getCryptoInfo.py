@@ -24,34 +24,46 @@ class handler(BaseHTTPRequestHandler):
 		#get_currencies seems to effectively return None (empty array) with bad request:
 		tmpCurrData = nomics.Currencies.get_currencies(ids = pairsAsStr)
 		if not tmpCurrData:		
-			self.sendBadResponse("Bad request, try again with proper param currencies")
+			self.sendBadHeaderResponse("Bad request, try again with proper param currencies")
 			return
 
 		self.sendGoodHeaderResponse()
 		#todo: maybe figure out how to not need to stay sorted ascending
-		currencyData = sorted(tmpCurrData, key=lambda tmp: tmp["id"])
-		#handle rate limit..
 		time.sleep(1)
-		#don't always want pricehist...
+		currencyData = sorted(tmpCurrData, key=lambda tmp: tmp["id"])
+		skip = False
 		if("priceHist" in rawQuery and rawQuery["priceHist"][0] == "true"):
 			request = sparklineURL + pairsAsStr
 			#should always appear, as there's a default 1d param... just ensure it's there?
 			if("priceInterv" in rawQuery):
-				request += "&start="+self.getTimeInterv(rawQuery["priceInterv"][0])
+				if(rawQuery["priceInterv"][0] == "all"):
+					allPrices = {}
+					for interv in ["1d","7d","30d","365d"]:
+						respo = self.getPrices(request + "&start="+self.getTimeInterv(interv))
+						for index, obj in enumerate(respo):
+							time.sleep(1)
+							allPrices["prices"+interv] = respo[index]["prices"]
+					#ultimately, want data as array, not purely json/dict.. but indexing gives purely json/dict 
+					currencyData[index]["allPrices"] = [json.dumps(allPrices)]
+					#currencyData[index]["first_trade"] = dateutil.parser.isoparse(currencyData[index]["first_trade"]).strftime("%b %d %Y %H:%M:%S")
+					skip = True
+				else:
+					request += "&start="+self.getTimeInterv(rawQuery["priceInterv"][0])
 			else:
 				request += "&start="+self.getTimeInterv(None)
-			#how to handle intentional jargon?
-			with urllib.request.urlopen(request) as response:
-				respo = json.load(response)
-				#grab prices and throw it into its corresponding obj (w/metadat). since same keys expect both sorted, safe to say indexing will work..?	
-				for index, obj in enumerate(respo):				
+			if not skip:
+				respo = self.getPrices(request)
+				for index, obj in enumerate(respo):
+					#grab = prices and throw it into its corresponding obj (w/metadat). since same keys expect both sorted, safe to say indexing will work..?	
 					currencyData[index]["prices"] = respo[index]["prices"]
-					currencyData[index]["first_trade"] = dateutil.parser.isoparse(currencyData[index]["first_trade"]).strftime("%b %d %Y %H:%M:%S")    
-					
-				print(currencyData)
-		self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
-		return 
-
+					currencyData[index]["first_trade"] = dateutil.parser.isoparse(currencyData[index]["first_trade"]).strftime("%b %d %mY %H:%M:%S")    
+			self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
+		time.sleep(2)
+		return
+	
+	def getPrices(self, sprkURL):
+		with urllib.request.urlopen(sprkURL) as response:
+			return json.load(response)
 	def sendBadHeaderResponse(self, msg):
 		self.send_response(400, message = msg)
 		self.send_header('Content-type', 'text/plain')
