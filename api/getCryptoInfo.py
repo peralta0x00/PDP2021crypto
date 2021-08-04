@@ -58,7 +58,6 @@ class handler(BaseHTTPRequestHandler):
 					currencyData[index]["prices"] = respo[index]["prices"]
 					currencyData[index]["first_trade"] = dateutil.parser.isoparse(currencyData[index]["first_trade"]).strftime("%b %d %mY %H:%M:%S")    
 			self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
-		time.sleep(2)
 		return
 	
 	def getPrices(self, sprkURL):
@@ -85,6 +84,5 @@ class handler(BaseHTTPRequestHandler):
 			delta = timedelta(weeks=56)
 		else:
 			delta = timedelta(hours=12)
-		
 		now = datetime.datetime.utcnow() - delta
 		return now.isoformat("T") + "Z"

@@ -4,13 +4,14 @@ import useSWR from 'swr'
 import React from 'react'
 import { Sparklines, SparklinesLine} from 'react-sparklines'
 import myStyles from '../../styles/styles.module.css'
-//const getCryptoCall =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
-const getCryptoCall = "http://localhost:3000/api/getCryptoInfo?params="
-const getTACall = "http://localhost:3000/api/getTAIndicators?params="
+const getCryptoCall =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
+const getTACall = "https://pdp-2021crypto.vercel.app/api/getTAIndicators?params="
 const fetcher = url => fetch(url).then(res => res.json());
 
 const getData = (endpoint) => {
 	const {data} = useSWR(endpoint, fetcher)
+	console.log("giving data")
+	console.log(data)
 	return data
 }
 
@@ -23,7 +24,6 @@ export default function DetailedCrypto() {
 	if( pid !== undefined) {
 		const data = getData(getCryptoCall + pid + "&priceHist=true" + "&priceInterv=365d")
 		const taDATA = getData(getTACall + pid) 
-
 		if(!data || !taDATA) return <Layout>Loading content..."</Layout>
 		return (
 			<Layout>
