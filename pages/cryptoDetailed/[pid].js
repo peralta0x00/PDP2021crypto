@@ -1,17 +1,18 @@
 import { useRouter } from 'next/router'
 import Layout from '../../components/layout'
 import useSWR from 'swr'
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts'
 import React from 'react'
-import { Sparklines, SparklinesLine} from 'react-sparklines'
+import {SparklinesReferenceLine, Sparklines, SparklinesLine} from 'react-sparklines'
 import myStyles from '../../styles/styles.module.css'
 const getCryptoCall =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
 const getTACall = "https://pdp-2021crypto.vercel.app/api/getTAIndicators?params="
 const fetcher = url => fetch(url).then(res => res.json());
 
+
+
 const getData = (endpoint) => {
 	const {data} = useSWR(endpoint, fetcher)
-	console.log("giving data")
-	console.log(data)
 	return data
 }
 
@@ -25,13 +26,14 @@ export default function DetailedCrypto() {
 		const data = getData(getCryptoCall + pid + "&priceHist=true" + "&priceInterv=365d")
 		const taDATA = getData(getTACall + pid) 
 		if(!data || !taDATA) return <Layout>Loading content..."</Layout>
+		console.log(data[0]["prices"])
 		return (
 			<Layout>
-				<div className={myStyles.mainBar}  >
+				<div className={myStyles.mainBar}>
 					<img src={data[0]["logo_url"]}></img>
-					<h1>{data[0]["name"]} 
+					<p>{data[0]["name"]} 
 					    (${data[0]["symbol"]})
-					</h1>
+					</p>
 				</div>
 				<div className={myStyles.priceBar}>
 					<div>Price: {data[0]["price"]}  
@@ -41,16 +43,17 @@ export default function DetailedCrypto() {
 					</pre> 
                                </div>
   			        <div className={myStyles.mainContent}>
-					<div id="sprk">
-					<Sparklines data={data[0]["prices"]}>
-						 <SparklinesLine color ="white"/>
-               	 			</Sparklines>
-					<Sparklines data={taDATA["20dMA"]}>
-						<SparklinesLine color ="red"/>
-					</Sparklines>
+					<div className = {myStyles.mainContent}>
+					<ResponsiveContainer width='100%' height={300}>
+					<LineChart  data={data[0]["prices"]}>
+						<Line type="monotone" dataKey="prc" stroke="white"/>
+						<XAxis stroke="white" dataKey="stmp" interval={5} />
+						<YAxis stroke = "white"/>
+					</LineChart>
+					</ResponsiveContainer>
+					<p>365d performance</p>
+					<p>30d MA</p>
 					</div>
-
-
 				   <div className={myStyles.side}>
 					<h1>About {data[0]["name"]}</h1>
 
@@ -64,4 +67,5 @@ export default function DetailedCrypto() {
 	}
 	else{return <Layout><div>Loading content..."</div></Layout> }
 }
+
 

@@ -1,7 +1,9 @@
 .header {
    text-align: center;
-   font-size:10px;
+   font-size:2vw;
    padding:0px;
    color:white;
    background:#484848;
+   height:35px;
+   align-items:center;
 }

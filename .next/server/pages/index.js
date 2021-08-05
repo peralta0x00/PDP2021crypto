@@ -89,17 +89,6 @@ module.exports = require("react-is");;
 
 /***/ }),
 
-/***/ "react-sparklines":
-/*!***********************************!*\
-  !*** external "react-sparklines" ***!
-  \***********************************/
-/***/ (function(module) {
-
-"use strict";
-module.exports = require("react-sparklines");;
-
-/***/ }),
-
 /***/ "react/jsx-dev-runtime":
 /*!****************************************!*\
   !*** external "react/jsx-dev-runtime" ***!
@@ -108,6 +97,17 @@ module.exports = require("react-sparklines");;
 
 "use strict";
 module.exports = require("react/jsx-dev-runtime");;
+
+/***/ }),
+
+/***/ "recharts":
+/*!***************************!*\
+  !*** external "recharts" ***!
+  \***************************/
+/***/ (function(module) {
+
+"use strict";
+module.exports = require("recharts");;
 
 /***/ }),
 

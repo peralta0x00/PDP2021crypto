@@ -8,7 +8,7 @@
   "index.js -> ../lib/cryptoDisplays": {
     "id": "./lib/cryptoDisplays.js",
     "files": [
-      "static/chunks/vendors-node_modules_react-sparklines_build_index_js-node_modules_swr_esm_index_js.js",
+      "static/chunks/vendors-node_modules_recharts_es6_index_js-node_modules_swr_esm_index_js.js",
       "static/chunks/lib_cryptoDisplays_js.js"
     ]
   }

@@ -29,11 +29,10 @@ class handler(BaseHTTPRequestHandler):
 			sinceWhen = self.getTimeInterv("365d")
 		request += "&start=" + sinceWhen
 		tmp = [float(item) for item in self.getPrices(request)[0]["prices"]]
-		npArray = np.array(tmp)
-		tmp20d = self.calculateMA(np.array(npArray) , 4)
+		tmp20d = self.calculateMA(np.array(tmp) , 4)
 		rtrn20d = [str(item) for item in tmp20d]
 		#6.5 day datapoints, so interval of 3 is about 20 days
-		self.wfile.write(bytes(json.dumps({"20dMA": rtrn20d}), 'utf-8'))
+		self.wfile.write(bytes(json.dumps([{"20dMA": rtrn20d}]), 'utf-8'))
 		return
 
 
@@ -42,8 +41,11 @@ class handler(BaseHTTPRequestHandler):
 			return json.load(response)
 
 	def calculateMA(self, data, length):
-		return np.convolve(data, np.ones(length), 'valid')  /length
-		
+		return np.array(np.convolve(data, np.ones(length), 'valid'))  /length
+	
+	def calculateWA(self, data):
+		tmp = np.repeat(np.ma.average(data), 30)
+		return [str(item) for item in tmp]
 	def sendGoodHeaderResponse(self):
 		self.send_response(200)
 		self.send_header('Content-type', 'text/plain')

@@ -16,12 +16,9 @@ pre {
    font-family:menlo;
    margin:0;
 }
-
 a {
-  background:navy;
-  color:white;
+   color:white;
 }
-
 a:hover {
    text-decoration: underline;
    color:red

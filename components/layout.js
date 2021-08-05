@@ -3,10 +3,13 @@ import sty from './layout.module.css'
 import Link from 'next/link'
 export default function Layout({children}) {
    return (
-    <div className={sty.header}>
-	<title>PeraltaCrypto</title>
-        <h1>PeraltaCrypto</h1>
-        <div>{children}</div>      
+    <div>
+	<div className={sty.header}>
+		<Link href = "/">
+			<a>PeraltaCrypto</a>
+		</Link>
+	</div>
+	<div>{children}</div>
     </div>
    )
 }

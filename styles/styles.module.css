@@ -1,9 +1,10 @@
 .tile {
    background:navy;
    color:white;
-   text-align:left;
-   font-size:17px;
+   text-align:center;
+   font-size:15px;
    border:2px solid black;
+   padding:5px;
 }
  
 .mainGrid {
@@ -18,7 +19,6 @@
     margin-left:auto;
     margin-right:auto;
 }
-
 .side {
    padding-left:0.8vw;
    border:2px solid black;
@@ -32,9 +32,9 @@
    background:navy;
    display:grid;
    grid-template-columns:70% 30%;
-   height:500px;
+   min-height:100%;
    padding:5px;
-   color:white
+   color:white;
 }
 .priceBar {
    background:navy;
@@ -42,7 +42,7 @@
    color:white;
    text-align:left;
    grid-template-columns:60% 40%;
-   font-size:2.5vw;
+   font-size:1.8vw;
    padding-left:10px;
    align-items:center;
    display:grid;
@@ -53,23 +53,18 @@
 }
 
 .mainBar img {
-   height: 7%;
-   width: 7%;
+   height: 6%;
+   width: 6%;
 }
+
 
 .mainBar {
     background:navy;
     align-items:center;
-    display:flex;
-    text-align:left;
+    font-size:2.1vw;
     border:2px solid black;
+    color:white;
+    white-space:nowrap;    
 }
 
-.mainBar h1 {
-   font-size:3.4vw;
-   background:navy;
-   padding-left:10px;
-   color:white;
-   white-space:nowrap;
-}
 
