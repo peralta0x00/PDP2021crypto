@@ -9,7 +9,7 @@ from datetime import timedelta
 import json
 
 myKey = "33286a74065de28c4b1e87c24522980d3f373ade"
-sparklineURL = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".format(myKey)
+nomicsAPI = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".format(myKey)
 
 class handler(BaseHTTPRequestHandler):
 	def do_GET(self):
@@ -20,7 +20,7 @@ class handler(BaseHTTPRequestHandler):
 			return
 		currenc = rawQuery["params"][0].upper()
 		self.sendGoodHeaderResponse()
-		request = sparklineURL + currenc
+		request = nomicsAPI + currenc
 
 		sinceWhen = ""
 		if("priceInterv" in rawQuery):
@@ -28,11 +28,13 @@ class handler(BaseHTTPRequestHandler):
 		else:
 			sinceWhen = self.getTimeInterv("365d")
 		request += "&start=" + sinceWhen
+
 		tmp = [float(item) for item in self.getPrices(request)[0]["prices"]]
 		tmp20d = self.calculateMA(np.array(tmp) , 4)
 		rtrn20d = [str(item) for item in tmp20d]
 		#6.5 day datapoints, so interval of 3 is about 20 days
 		self.wfile.write(bytes(json.dumps([{"20dMA": rtrn20d}]), 'utf-8'))
+		print(tmp)
 		return
 
 
@@ -43,9 +45,6 @@ class handler(BaseHTTPRequestHandler):
 	def calculateMA(self, data, length):
 		return np.array(np.convolve(data, np.ones(length), 'valid'))  /length
 	
-	def calculateWA(self, data):
-		tmp = np.repeat(np.ma.average(data), 30)
-		return [str(item) for item in tmp]
 	def sendGoodHeaderResponse(self):
 		self.send_response(200)
 		self.send_header('Content-type', 'text/plain')

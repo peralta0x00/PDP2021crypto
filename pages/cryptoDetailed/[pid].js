@@ -3,30 +3,28 @@ import Layout from '../../components/layout'
 import useSWR from 'swr'
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts'
 import React from 'react'
-import {SparklinesReferenceLine, Sparklines, SparklinesLine} from 'react-sparklines'
 import myStyles from '../../styles/styles.module.css'
-const getCryptoCall =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
-const getTACall = "https://pdp-2021crypto.vercel.app/api/getTAIndicators?params="
+
 const fetcher = url => fetch(url).then(res => res.json());
-
-
-
 const getData = (endpoint) => {
 	const {data} = useSWR(endpoint, fetcher)
 	return data
 }
 
 export default function DetailedCrypto() {
-        const router = useRouter()
+	const getCryptoCall =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
+
+	const getTACall = "https://pdp-2021crypto.vercel.app/api/getTAIndicators?params="
+	const router = useRouter()
         const billion = 1000000000
-	//url query?
+
 	const { pid } = router.query
         //During prerendering, the router's query object will be empty since we do not have query information to provide during this phase.
 	if( pid !== undefined) {
 		const data = getData(getCryptoCall + pid + "&priceHist=true" + "&priceInterv=365d")
 		const taDATA = getData(getTACall + pid) 
 		if(!data || !taDATA) return <Layout>Loading content..."</Layout>
-		console.log(data[0]["prices"])
+		console.log(taDATA)
 		return (
 			<Layout>
 				<div className={myStyles.mainBar}>
@@ -43,25 +41,26 @@ export default function DetailedCrypto() {
 					</pre> 
                                </div>
   			        <div className={myStyles.mainContent}>
-					<div className = {myStyles.mainContent}>
-					<ResponsiveContainer width='100%' height={300}>
-					<LineChart  data={data[0]["prices"]}>
-						<Line type="monotone" dataKey="prc" stroke="white"/>
-						<XAxis stroke="white" dataKey="stmp" interval={5} />
-						<YAxis stroke = "white"/>
-					</LineChart>
-					</ResponsiveContainer>
-					<p>365d performance</p>
-					<p>30d MA</p>
-					</div>
-				   <div className={myStyles.side}>
-					<h1>About {data[0]["name"]}</h1>
+						<div>
+							<p>365d performance</p>
+							<ResponsiveContainer width='100%' height={300}>
+							<LineChart  data={data[0]["prices"]}>
+								<Line type="monotone" dataKey="prc" stroke="white"/>
+								<XAxis stroke="white" dataKey="stmp"  />
+								<YAxis stroke = "white"/>
+								<Tooltip />
+							</LineChart>
+							</ResponsiveContainer>
+						</div>
+						<div className={myStyles.side}>
+							<h1>About {data[0]["name"]}</h1>
 
-					All time high: {data[0]["high"]}<br/><br/>
-					# circulating: {data[0]["circulating_supply"]}<br/><br/>
-				        First trade:   {data[0]["first_trade"]}
-				   </div>
-				</div>
+							All time high: {data[0]["high"]}<br/><br/>
+							# circulating: {data[0]["circulating_supply"]}<br/><br/>
+					        	First trade:   {data[0]["first_trade"]}
+						</div>
+					</div>
+	
 			</Layout>
 		)
 	}

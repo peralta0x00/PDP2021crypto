@@ -4,18 +4,18 @@
    text-align:center;
    font-size:15px;
    border:2px solid black;
-   padding:5px;
+   padding:3px;
 }
  
 .mainGrid {
    display:grid;
-   padding:2px;
+   padding:0px;
    grid-template-columns: repeat(auto-fit, minmax(333px, 1fr));
    grid-auto-rows:vw;
 }
 
 .srcImage {
-    max-height:45px;
+    max-height:40px;
     margin-left:auto;
     margin-right:auto;
 }
@@ -31,9 +31,8 @@
 .mainContent {
    background:navy;
    display:grid;
-   grid-template-columns:70% 30%;
+   grid-template-columns:72% 28%;
    min-height:100%;
-   padding:5px;
    color:white;
 }
 .priceBar {
@@ -41,9 +40,9 @@
    border-bottom:2px solid black;
    color:white;
    text-align:left;
-   grid-template-columns:60% 40%;
+   grid-template-columns:59% 40%;
    font-size:1.8vw;
-   padding-left:10px;
+   padding-left:20px;
    align-items:center;
    display:grid;
 }
@@ -59,12 +58,12 @@
 
 
 .mainBar {
+   display:flex;
     background:navy;
     align-items:center;
     font-size:2.1vw;
     border:2px solid black;
     color:white;
-    white-space:nowrap;    
 }
 
 
