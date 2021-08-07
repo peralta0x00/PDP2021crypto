@@ -1,8 +1,7 @@
 .header {
-   text-align: center;
-   font-size:2vw;
+   text-align:center;
    color:white;
    background:#484848;
-   height:3vw;
-   font-size:2vw;
+   height:auto;
+   font-size:23px;
 }

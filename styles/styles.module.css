@@ -2,16 +2,24 @@
    background:navy;
    color:white;
    text-align:center;
-   font-size:15px;
+   font-size:auto;
    border:2px solid black;
    padding:3px;
 }
- 
+
+.search {
+   width:50%;
+   font-family:menlo;   
+} 
+.homePage {
+   padding-top:5px;
+   text-align:center;
+}
 .mainGrid {
    display:grid;
-   padding:0px;
+   padding:2px;
    grid-template-columns: repeat(auto-fit, minmax(333px, 1fr));
-   grid-auto-rows:vw;
+   grid-auto-rows:auto;
 }
 
 .srcImage {
@@ -65,5 +73,3 @@
     border:2px solid black;
     color:white;
 }
-
-

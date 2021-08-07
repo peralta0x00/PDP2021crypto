@@ -5,21 +5,20 @@ import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContain
 import React from 'react'
 import myStyles from '../../styles/styles.module.css'
 
-const fetcher = url => fetch(url).then(res => res.json());
-const getData = (endpoint) => {
-	const {data} = useSWR(endpoint, fetcher)
-	return data
-}
 
 export default function DetailedCrypto() {
+	const fetcher = url => fetch(url).then(res => res.json());
+		const getData = (endpoint) => {
+        	const {data} = useSWR(endpoint, fetcher)
+        	return data
+	}
 	const getCryptoCall =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
-
 	const getTACall = "https://pdp-2021crypto.vercel.app/api/getTAIndicators?params="
 	const router = useRouter()
         const billion = 1000000000
 
 	const { pid } = router.query
-        //During prerendering, the router's query object will be empty since we do not have query information to provide during this phase.
+
 	if( pid !== undefined) {
 		const data = getData(getCryptoCall + pid + "&priceHist=true" + "&priceInterv=365d")
 		const taDATA = getData(getTACall + pid) 

@@ -2,20 +2,16 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family:menlo;
   background:#484848; 
 }
 
 
 * {
   box-sizing: border-box;
-  width:auto%;
+  width:auto;
+  font-family:menlo;
 }
 
-pre {
-   font-family:menlo;
-   margin:0;
-}
 a {
    color:white;
 }

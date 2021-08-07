@@ -14,56 +14,64 @@ sparklineURL = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".form
 class handler(BaseHTTPRequestHandler):
 	def do_GET(self):
 		pars = urlparse(self.path.replace("%2C", ","))
-		#4th index dedicated to query, returns dict
 		rawQuery = parse_qs(pars[4])
 		if("params" not in rawQuery):
 			self.sendBadResponse("Bad request, can't find params")
 			return
 			
-		pairsAsStr = rawQuery["params"][0].upper() 
-		#get_currencies seems to effectively return None (empty array) with bad request:
-		tmpCurrData = nomics.Currencies.get_currencies(ids = pairsAsStr)
-		if not tmpCurrData:		
+		#need to upper since API wants upper
+		pairsAsStr = rawQuery["params"][0].upper()
+		currencyData = nomics.Currencies.get_currencies(ids = pairsAsStr)
+		if not currencyData:		
 			self.sendBadHeaderResponse("Bad request, try again with proper param currencies")
 			return
 
 		self.sendGoodHeaderResponse()
 		time.sleep(1)
-	 	#todo: maybe figure out how to not need to stay sorted ascending
-		currencyData = sorted(tmpCurrData, key=lambda tmp: tmp["id"])
-		
+
 		if("priceHist" in rawQuery and rawQuery["priceHist"][0] == "true"):
 			request = sparklineURL + pairsAsStr
-			#should always appear, as there's a default 1d param... just ensure it's there?
 			if("priceInterv" in rawQuery):
-				#may default if improper priceInterv, ultimately defaults to 7d... 
+				#defaults to 12 hrs if bad interv
 				request += "&start="+self.getTimeInterv(rawQuery["priceInterv"][0])
 			else:
 				request += "&start="+self.getTimeInterv(None)
-			#in same order as currencyData, returns array of json objects each representing datapoint of price... fulfills  
 			respo = self.getPrices(request)
-			for index, obj in enumerate(respo):
-				currencyData[index]["prices"] = respo[index]
+			
+			#respo may not contain data for every coin.. so, try to add something and fall back onto default val in try 
+			#also deal with depended on attributes to default their values, if not there
+			for index, obj in enumerate(currencyData):
+				if("1d" not in obj):
+					obj["1d"] = {"volume": "N/A"}
+				try:	
+					currencyData[index]["prices"] = respo[obj["id"]]
+				except:
+					currencyData[index]["prices"] = [{"stmp": "", "prc": 0}]		
 		self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
-		
 		return
 	
 	def getPrices(self, sprkURL):
 		respo = {}
-		formattedPrices = []
+		formattedPrices = {}
 		currencyX = []
 		with urllib.request.urlopen(sprkURL) as response:
 			#for each currency,  index 0:ticker, 1: tmestmp, 2: price
 			respo = json.load(response)
 
-		#could just be one... or very many, as seen in homepage
-		for el in respo:
+		#iterate respo; turns out, some coins CANNOT provide data for given date..
+		#as such, create dict with data that CAN provide data. later, will hand out
+		#elements that exist based on key (since it's a dict) and keys not existing means
+		#no data, in current timeframe...
+		
+		#create desired format of [{"stmp": someStrDate, "prc": someNum}, {...}]
+		for elIndex, el in enumerate(respo):
+			#timestamps and price assumed same lengths... so iterate timestamps and use its index to align the corresponding points
 			for indx, stmp in enumerate(el["timestamps"]):
-				currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%b %d %y"), "prc":float(el["prices"][indx])})
-				#currencyX.append({"stmp": indx, "prc":float(el["prices"][indx])})
-			formattedPrices.append(currencyX)
+				currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%H:%M"), "prc":float(el["prices"][indx])})
+			formattedPrices[el["currency"]] = currencyX
 			currencyX = []
 		return formattedPrices		
+
 	def sendBadHeaderResponse(self, msg):
 		self.send_response(400, message = msg)
 		self.send_header('Content-type', 'text/plain')
