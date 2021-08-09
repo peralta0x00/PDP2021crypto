@@ -8,7 +8,7 @@ import time
 from datetime import timedelta
 import json
 
-myKey = "33286a74065de28c4b1e87c24522980d3f373ade"
+myKey = ""
 nomicsAPI = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".format(myKey)
 
 class handler(BaseHTTPRequestHandler):
@@ -34,7 +34,6 @@ class handler(BaseHTTPRequestHandler):
 		rtrn20d = [str(item) for item in tmp20d]
 		#6.5 day datapoints, so interval of 3 is about 20 days
 		self.wfile.write(bytes(json.dumps([{"20dMA": rtrn20d}]), 'utf-8'))
-		print(tmp)
 		return
 
 

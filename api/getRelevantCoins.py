@@ -14,7 +14,8 @@ class handler(BaseHTTPRequestHandler):
 			return
 		#what the query (which would hopefully be from a searchbar) is
 
-		theQuery = rawQuery["param"][0]
+		#allows uppercase searches
+		theQuery = rawQuery["param"][0].lower()
 		self.sendGoodHeaderResponse()
 		
 		myArr = []

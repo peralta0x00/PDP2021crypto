@@ -7,8 +7,7 @@ import time
 from datetime import timedelta
 from nomics import Nomics
 import json
-
-myKey = "33286a74065de28c4b1e87c24522980d3f373ade"
+myKey = ""
 nomics = Nomics(myKey)
 sparklineURL = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".format(myKey)
 class handler(BaseHTTPRequestHandler):
