@@ -25,7 +25,6 @@ class handler(BaseHTTPRequestHandler):
 				myArr.append(str(line.strip('\n').lower()))
 
 		results = difflib.get_close_matches(theQuery, myArr, 10)
-		print('result:{}'.format(results))
 		self.wfile.write(bytes(json.dumps({"smlrCoins":results}), 'utf-8'))
 		return
 	

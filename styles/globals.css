@@ -2,9 +2,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background:#484848; 
+   background:#484848;
 }
-
 
 * {
   box-sizing: border-box;
@@ -12,12 +11,11 @@ body {
   font-family:menlo;
 }
 
-a {
+a { 
    color:white;
 }
 
 a:hover {
-   text-decoration: underline;
    color:red
 }
 

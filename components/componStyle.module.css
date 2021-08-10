@@ -1,11 +1,14 @@
 .header {
    text-align:center;
    background:#484848;
-   height:auto;
    font-size:23px;
 }
 
 .bottomHeader {
    font-size: 18px;
    text-align:center;
+   bottom:0;
+   position:fixed;
+   padding-top:20px;
+   width:100%;
 }

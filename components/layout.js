@@ -13,11 +13,11 @@ export default function Layout({children}) {
 	<div>{children}</div>
 	<div className={sty.bottomHeader}>
 		<Link href = "/about">
-			<a id="aboutLink">About</a>
+			<a>About</a>
 		</Link>
 		<div/>
 		<Link href ="https://github.com/kevinparalta/PDP2021crypto">		
-			<a id = "sourceLink">Source</a> 
+			<a>Source</a> 
 		</Link>
         </div>
     </div>

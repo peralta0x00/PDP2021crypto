@@ -7,10 +7,11 @@ import time
 from datetime import timedelta
 from nomics import Nomics
 import json
-myKey = ""
+myKey = "33286a74065de28c4b1e87c24522980d3f373ade"
 nomics = Nomics(myKey)
 sparklineURL = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".format(myKey)
 class handler(BaseHTTPRequestHandler):
+	
 	def do_GET(self):
 		pars = urlparse(self.path.replace("%2C", ","))
 		rawQuery = parse_qs(pars[4])
@@ -20,7 +21,9 @@ class handler(BaseHTTPRequestHandler):
 			
 		#need to upper since API wants upper
 		pairsAsStr = rawQuery["params"][0].upper()
+		#data comes with all intervals... 
 		currencyData = nomics.Currencies.get_currencies(ids = pairsAsStr)
+		
 		if not currencyData:		
 			self.sendBadHeaderResponse("Bad request, try again with proper param currencies")
 			return
@@ -35,13 +38,22 @@ class handler(BaseHTTPRequestHandler):
 				request += "&start="+self.getTimeInterv(rawQuery["priceInterv"][0])
 			else:
 				request += "&start="+self.getTimeInterv(None)
-			respo = self.getPrices(request)
+			respo = self.getPrices(request, rawQuery["priceInterv"][0])
 			
 			#respo may not contain data for every coin.. so, try to add something and fall back onto default val in try 
 			#also deal with depended on attributes to default their values, if not there
 			for index, obj in enumerate(currencyData):
 				if("1d" not in obj):
 					obj["1d"] = {"volume": "N/A"}
+				else:
+					#formatting numbers so no need later
+					obj["1d"]["price_change_pct"] = round(float(obj["1d"]["price_change_pct"])*100, 5)
+					obj["1d"]["volume"] = round(float(obj["1d"]["volume"]) / 1000000000, 5)				
+					obj["price"] = round(float(obj["price"]),4)
+					if(float(obj["1d"]["price_change_pct"]) > 0):
+						obj["price_color"] = "green"
+					else:
+						obj["price_color"] = "red"
 				try:	
 					currencyData[index]["prices"] = respo[obj["id"]]
 				except:
@@ -49,7 +61,7 @@ class handler(BaseHTTPRequestHandler):
 		self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
 		return
 	
-	def getPrices(self, sprkURL):
+	def getPrices(self, sprkURL, desiredInterv):
 		respo = {}
 		formattedPrices = {}
 		currencyX = []
@@ -66,9 +78,14 @@ class handler(BaseHTTPRequestHandler):
 		for elIndex, el in enumerate(respo):
 			#timestamps and price assumed same lengths... so iterate timestamps and use its index to align the corresponding points
 			for indx, stmp in enumerate(el["timestamps"]):
-				currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%H:%M"), "prc":float(el["prices"][indx])})
+				if(desiredInterv == "1d"):
+					currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%H:00"), "prc":float(el["prices"][indx])})
+				#if eventually needed, could adjust accordingly here if more formatting needed
+				else:
+					currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%b %d"), "prc":float(el["prices"][indx])})
 			formattedPrices[el["currency"]] = currencyX
 			currencyX = []
+		print(formattedPrices)
 		return formattedPrices		
 
 	def sendBadHeaderResponse(self, msg):

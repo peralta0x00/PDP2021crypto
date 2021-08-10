@@ -1,42 +1,40 @@
-.tile {
-   background:navy;
-   color:white;
-   text-align:center;
-   font-size:auto;
-   border:3px solid #484848;
-   padding:5px;
- 
-}
-
-.remove {
-   width:auto;
-   float:right;
-}
-.search {
-   width:50%;
-   font-family:menlo;   
-} 
 .homePage {
    padding-top:5px;
    text-align:center;
 }
+
 .mainGrid {
    display:grid;
    padding:2px;
-   grid-template-columns: repeat(auto-fit, minmax(333px, 2fr));
+   grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
 }
 
+.tile {
+   background:navy;
+   color:white;
+   text-align:center;
+   font-size:2.6vmin;
+   border:3px solid #484848;
+   padding:1px;
+}
+
+.search {
+   width:50%;
+   font-family:menlo;   
+} 
+
 .srcImage {
-    max-height:40px;
+    max-height:35px;
     margin-left:auto;
     margin-right:auto;
+    display:grid;
 }
 .side {
    padding-left:0.8vw;
    border:2px solid black;
    color:white;
    text-align:left;
-   font-size:1.4vw;
+   font-size:1.5vw;
 }
 
 
@@ -46,34 +44,35 @@
    grid-template-columns:72% 28%;
    min-height:100%;
    color:white;
+   padding-bottom:100px;
 }
 .priceBar {
    background:navy;
-   border-bottom:2px solid black;
+   border-bottom: 2px solid black;
    color:white;
-   text-align:left;
-   grid-template-columns:59% 40%;
-   font-size:1.8vw;
+   grid-template-columns:60% 40%;
+   font-size:auto;
    padding-left:20px;
    align-items:center;
    display:grid;
 }
-.help {
-  text-align:center;
-  font-size:1vw;  
-}
 
 .mainBar img {
-   height: 6%;
-   width: 6%;
+   height: 75px;
+   width: 75px;
 }
 
-
 .mainBar {
-   display:flex;
+    padding-left:10px;
+    display:flex;
     background:navy;
     align-items:center;
-    font-size:2.1vw;
+    font-size:30px;
     border:2px solid black;
     color:white;
 }
+
+.aboutPage {
+   color:white;
+}
+
