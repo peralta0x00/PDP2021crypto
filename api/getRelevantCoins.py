@@ -35,8 +35,8 @@ class handler(BaseHTTPRequestHandler):
 		return
 
 	def sendBadHeaderResponse(self, msg):
-		self.send_response(400, message=msg)
+		self.send_response(404, message=msg)
 		self.send_header('Content-type', 'text/plain')
-		self.send_headers()
+		self.end_headers()
 		return
 

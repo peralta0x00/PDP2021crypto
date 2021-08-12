@@ -12,15 +12,12 @@ export default function DetailedCrypto() {
         	return data
 	}
 	const getCryptoCall =  "https://pdp-2021crypto.vercel.app/api/getCryptoInfo?params="
-	const billion = 1000000000	
-
 	const router = useRouter()
 	const { pid } = router.query
 
 	if( pid !== undefined) {
 		const data = getData(getCryptoCall + pid + "&priceHist=true" + "&priceInterv=365d")
-		if(!data) return <Layout>Loading content..."</Layout>
-		console.log(data)
+		if(!data) return <Layout>Loading content... </Layout>
 		return (
 			<Layout>
 				<div className={myStyles.mainBar}>
@@ -32,29 +29,29 @@ export default function DetailedCrypto() {
 				<div className={myStyles.priceBar}>
 					<div>Price: {data[0]["price"]}  
 					</div>
-					<pre>MKT CAP:  1d VOL:  RANK:<br/>
-						{Math.round(data[0]["market_cap"] / billion*100)/100}B    {data[0]["1d"]["volume"]}B    {data[0]["rank"]}
+					<pre>MKT CAP:   365d VOL:    RANK:<br/>
+						{data[0]["market_cap"]}     {data[0]["365d"]["volume"]}      {data[0]["rank"]}
 					</pre> 
-                               </div>
-  			        <div className={myStyles.mainContent}>
-						<div>
-							<p>365d performance</p>
-							<ResponsiveContainer width='100%' height={300}>
-							<LineChart  data={data[0]["prices"]}>
-								<Line type="monotone" dataKey="prc" stroke="white"/>
-								<XAxis stroke="#999999" dataKey="stmp"angle={-45} />
-								<YAxis stroke = "#999999"/>
+                </div>
+  			    <div className={myStyles.mainContent}>
+					<div>
+						<ResponsiveContainer width='100%' height={300}>
+						<LineChart  data={data[0]["prices"]}>
+							<Line type="monotone" dataKey="prc" stroke="white"/>
+							<XAxis stroke="#999999" dataKey="stmp" angle={-45} />
+							<YAxis dy={3} stroke = "#999999"/>
 							</LineChart>
 							</ResponsiveContainer>
-						</div>
-						<div className={myStyles.side}>
-							<h1>About {data[0]["name"]}</h1>
-
-							All time high: {data[0]["high"]}<br/><br/>
-							# circulating: {data[0]["circulating_supply"]}<br/><br/>
-					        	First trade:   {data[0]["first_trade"]}
-						</div>
+							<div>365d performance</div>
+							<div style={{color:data[0]["price_color"]}}>{data[0]["365d"]["price_change_pct"]}%</div>
 					</div>
+					<div className={myStyles.side}>
+						<h1>About {data[0]["name"]}</h1>
+						<div>All time high: {data[0]["high"]}</div><br/><br/>
+						<div>Maximum supply: {data[0]["max_supply"]}</div><br/><br/>
+				        <div>First trade:   {data[0]["first_candle"]}</div>
+					</div>
+				</div>
 			</Layout>
 		)
 	}

@@ -1,6 +1,6 @@
 import Layout from '../components/layout'
 import myStyles from '../styles/styles.module.css'	
-import NextLink from 'next/Link'
+import Link from 'next/link'
 export default function About(){
    return (
 	<Layout>

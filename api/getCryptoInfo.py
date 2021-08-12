@@ -7,7 +7,7 @@ import time
 from datetime import timedelta
 from nomics import Nomics
 import json
-myKey = "33286a74065de28c4b1e87c24522980d3f373ade"
+myKey = ""
 nomics = Nomics(myKey)
 sparklineURL = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".format(myKey)
 class handler(BaseHTTPRequestHandler):
@@ -38,22 +38,45 @@ class handler(BaseHTTPRequestHandler):
 				request += "&start="+self.getTimeInterv(rawQuery["priceInterv"][0])
 			else:
 				request += "&start="+self.getTimeInterv(None)
-			respo = self.getPrices(request, rawQuery["priceInterv"][0])
-			
+				priceInterv = "1d" #defaulting for below
+
+			desiredInterv = rawQuery["priceInterv"][0]
+			respo = self.getPrices(request, desiredInterv)
 			#respo may not contain data for every coin.. so, try to add something and fall back onto default val in try 
 			#also deal with depended on attributes to default their values, if not there
 			for index, obj in enumerate(currencyData):
-				if("1d" not in obj):
-					obj["1d"] = {"volume": "N/A"}
-				else:
-					#formatting numbers so no need later
-					obj["1d"]["price_change_pct"] = round(float(obj["1d"]["price_change_pct"])*100, 5)
-					obj["1d"]["volume"] = round(float(obj["1d"]["volume"]) / 1000000000, 5)				
-					obj["price"] = round(float(obj["price"]),4)
-					if(float(obj["1d"]["price_change_pct"]) > 0):
+				#given interv, check if it was valid; if so, check if coin gives data for it; if not, set default; if so, adjust its respective data
+				if(desiredInterv in ["1d", "7d", "30d", "365d"] and desiredInterv not in obj):
+					obj[desiredInterv] = {"volume": "N/A"} #other vals, as seen below, don't give errors?
+				elif(desiredInterv in ["1d", "7d", "30d", "365d"]):
+					#necessarily true 1d in obj, and requested
+					obj[desiredInterv]["price_change_pct"] = self.getCleanPricePCT(obj[desiredInterv]["price_change_pct"])
+					obj[desiredInterv]["volume"] = str(round(float(obj[desiredInterv]["volume"]) / 1000000000, 2)) + "B"				
+					
+					if(float(obj[desiredInterv]["price_change_pct"]) > 0):
 						obj["price_color"] = "green"
 					else:
 						obj["price_color"] = "red"
+
+				obj["price"] = "{:,}".format(round(float(obj["price"]),3))
+				
+				#need to attempt to format individually
+				try:
+					obj["high"] = "{:,}".format(round(float(obj["high"]), 3))
+				except:
+					obj["high"] = "N/A"
+				try:
+					obj["first_candle"] = dateutil.parser.isoparse(obj["first_candle"]).strftime("%B %d, %Y")
+				except:
+					pass
+				try:
+					obj["market_cap"] = str(round(float(obj["market_cap"]) / 1000000000, 2)) + "B"
+				except:
+					obj["market_cap"] = "N/A"
+				try:
+					obj["max_supply"] = "{:,}".format(float(obj["max_supply"]))
+				except:
+					obj["max_supply"] = "None"
 				try:	
 					currencyData[index]["prices"] = respo[obj["id"]]
 				except:
@@ -61,6 +84,9 @@ class handler(BaseHTTPRequestHandler):
 		self.wfile.write(bytes(json.dumps(currencyData), 'utf-8'))
 		return
 	
+	def getCleanPricePCT(self, val):
+		return round(float(val)*100, 5)
+
 	def getPrices(self, sprkURL, desiredInterv):
 		respo = {}
 		formattedPrices = {}
@@ -82,16 +108,15 @@ class handler(BaseHTTPRequestHandler):
 					currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%H:00"), "prc":float(el["prices"][indx])})
 				#if eventually needed, could adjust accordingly here if more formatting needed
 				else:
-					currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%b %d"), "prc":float(el["prices"][indx])})
+					currencyX.append({"stmp": dateutil.parser.isoparse(stmp).strftime("%b %d "), "prc":float(el["prices"][indx])})
 			formattedPrices[el["currency"]] = currencyX
 			currencyX = []
-		print(formattedPrices)
 		return formattedPrices		
 
 	def sendBadHeaderResponse(self, msg):
-		self.send_response(400, message = msg)
+		self.send_response(404, message = msg)
 		self.send_header('Content-type', 'text/plain')
-		self.send_headers()
+		self.end_headers()
 		return
 	def sendGoodHeaderResponse(self):
 		self.send_response(200)

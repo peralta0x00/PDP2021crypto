@@ -6,16 +6,16 @@
 .mainGrid {
    display:grid;
    padding:2px;
-   grid-template-columns: repeat(auto-fit, minmax(33%, 1fr));
+   grid-template-columns: repeat(auto-fit, minmax(333px, 1fr));
 }
 
 .tile {
-   background:navy;
+   background:#3a2d75;
    color:white;
-   text-align:center;
    font-size:2.6vmin;
    border:3px solid #484848;
    padding:1px;
+   
 }
 
 .search {
@@ -30,31 +30,33 @@
     display:grid;
 }
 .side {
-   padding-left:0.8vw;
-   border:2px solid black;
+   padding-left: 1px;
+   border:1px solid black;
    color:white;
    text-align:left;
-   font-size:1.5vw;
+   font-size:2.2vmin;
 }
 
 
 .mainContent {
-   background:navy;
-   display:grid;
+   background:#3a2d75;
+   display: grid;
    grid-template-columns:72% 28%;
    min-height:100%;
    color:white;
    padding-bottom:100px;
+   text-align: center;
 }
 .priceBar {
-   background:navy;
-   border-bottom: 2px solid black;
+   background:#3a2d75;
+   border-bottom: 1px solid black;
    color:white;
-   grid-template-columns:60% 40%;
-   font-size:auto;
+   grid-template-columns:35% 65%;
+   font-size:3vmin;
    padding-left:20px;
    align-items:center;
    display:grid;
+
 }
 
 .mainBar img {
@@ -65,10 +67,10 @@
 .mainBar {
     padding-left:10px;
     display:flex;
-    background:navy;
+    background:#3a2d75;
     align-items:center;
-    font-size:30px;
-    border:2px solid black;
+    font-size:28px;
+    border:1px solid black;
     color:white;
 }
 

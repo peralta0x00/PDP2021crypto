@@ -8,7 +8,10 @@ import time
 from datetime import timedelta
 import json
 
-myKey = "33286a74065de28c4b1e87c24522980d3f373ade"
+"""
+ work in progress.... can be referenced but likely for errors to come up
+"""
+myKey = ""
 nomicsAPI = "https://api.nomics.com/v1/currencies/sparkline?key={}&ids=".format(myKey)
 
 class handler(BaseHTTPRequestHandler):
@@ -29,7 +32,8 @@ class handler(BaseHTTPRequestHandler):
 			sinceWhen = self.getTimeInterv("365d")
 		request += "&start=" + sinceWhen
 
-		tmp = [float(item) for item in self.getPrices(request)[0]["prices"]]
+		tmp = [float(item) for item in self.get20dMA(request)[0]["prices"]]
+
 		tmp20d = self.calculateMA(np.array(tmp) , 4)
 		rtrn20d = [str(item) for item in tmp20d]
 		#6.5 day datapoints, so interval of 3 is about 20 days
@@ -37,9 +41,16 @@ class handler(BaseHTTPRequestHandler):
 		return
 
 
-	def getPrices(self, sprkURL):
+	def get20dMA(self, sprkURL):
+		respo = {}
+		currencyX = []
 		with urllib.request.urlopen(sprkURL) as response:
-			return json.load(response)
+			respo = json.load(response)
+
+		tmp = calculateMA(respo[0]["prices"])
+		#for stmp, stmpIndx in enumerate(respo[0]["timestamps"]):
+			#currencyX.append({"20dMAstmp"})
+		return None
 
 	def calculateMA(self, data, length):
 		return np.array(np.convolve(data, np.ones(length), 'valid'))  /length
@@ -50,9 +61,9 @@ class handler(BaseHTTPRequestHandler):
 		self.end_headers()
 
 	def sendBadHeaderResponse(self, msg):
-		self.send_response(400, message = msg)
+		self.send_response(404, message = msg)
 		self.send_header('Content-type', 'text/plain')
-		self.send_headers()
+		self.end_headers()
 		return
 
 

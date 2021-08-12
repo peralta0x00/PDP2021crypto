@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import Layout from '../components/layout'
-import Link from 'next/link'
+import NextLink from 'next/link'
 
 /*
    runtime (?) linking to library with no server-side building. prior,
